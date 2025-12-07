@@ -5,9 +5,7 @@ export class HomePage {
 
     async goToMenu(subMenu: string) {
         await this.page.getByRole('heading', { name: 'Elements' }).click();
-        await this.page.getByText(subMenu, { exact: true }).click();
-        await expect(
-            this.page.getByRole('heading', { name: subMenu })
-        ).toBeVisible();
+        await this.page.getByRole('listitem').getByText(subMenu, { exact: true }).click();
+        await expect(this.page.locator('h1', { hasText: subMenu })).toBeVisible();
     }
 }
