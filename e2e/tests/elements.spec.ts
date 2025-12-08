@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 
+const mainMenu = 'Elements';
+
 const menus = [
   { subMenu: 'Text Box' },
   { subMenu: 'Check Box' },
@@ -14,17 +16,17 @@ const menus = [
 ];
 
 menus.forEach(({ subMenu }) => {
-  test(`access to menu and submenu ${subMenu}`, async ({ page }) => {
+  test(`access to menu ${mainMenu} and submenu ${subMenu}`, async ({ page }) => {
     await page.goto('https://demoqa.com');
     const home = new HomePage(page);
-    await home.goToMenu(subMenu);
+    await home.goToMenu(mainMenu, subMenu);
   });
 });
 
 test(`user input in Text Box`, async ({ page }) => {
   await page.goto('https://demoqa.com');
   const home = new HomePage(page);
-  await home.goToMenu('Text Box');
+  await home.goToMenu(mainMenu, 'Text Box');
 
   await page.locator('[id="userName"]').fill('John Doe');
   await page.locator('[id="userEmail"]').fill('testingpandu@gmail.com');
@@ -37,7 +39,7 @@ test(`user input in Text Box`, async ({ page }) => {
 test(`user check in the box`, async ({ page }) => {
   await page.goto('https://demoqa.com');
   const home = new HomePage(page);
-  await home.goToMenu('Check Box');
+  await home.goToMenu(mainMenu, 'Check Box');
 
   await page.locator('[title="Expand all"]').click();
   await page.getByText('Commands').click();
@@ -66,7 +68,7 @@ test(`user check in the box`, async ({ page }) => {
 test(`user input radio button`, async ({ page }) => {
   await page.goto('https://demoqa.com');
   const home = new HomePage(page);
-  await home.goToMenu('Radio Button');
+  await home.goToMenu(mainMenu, 'Radio Button');
 
   await page.locator('[id="impressiveRadio"]').click({ force: true });
   await expect(page.getByText('You have selected Impressive')).toBeVisible();
@@ -75,7 +77,7 @@ test(`user input radio button`, async ({ page }) => {
 test(`user doing CRUD web tables`, async ({ page }) => {
   await page.goto('https://demoqa.com');
   const home = new HomePage(page);
-  await home.goToMenu('Web Tables');
+  await home.goToMenu(mainMenu, 'Web Tables');
 
   await page.locator('[id="addNewRecordButton"]').click({ force: true });
   await page.locator('[id="firstName"]').fill('Pandu');

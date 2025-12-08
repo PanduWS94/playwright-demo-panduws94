@@ -3,12 +3,13 @@ import { Page, expect } from '@playwright/test';
 export class HomePage {
     constructor(private page: Page) { }
 
-    async goToMenu(subMenu: string) {
-        const el = this.page.getByRole('heading', { name: 'Elements' });
+
+    async goToMenu(mainMenu: string, subMenu: string) {
+        const el = this.page.getByRole('heading', { name: mainMenu });
         await el.scrollIntoViewIfNeeded();
         await el.click();
 
-        const accordion = this.page.locator('[class="accordion"]').getByText(subMenu, { exact: true })
+        const accordion = this.page.locator('[class="accordion"]').getByText(subMenu)
         await accordion.scrollIntoViewIfNeeded()
         await accordion.click()
 
