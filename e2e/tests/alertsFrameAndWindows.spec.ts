@@ -96,7 +96,33 @@ test(`user handle frames`, async ({ page }) => {
 
     const frame2 = page.frameLocator('iframe[width="100px"][height="100px"]');
     await expect(frame2.getByText('This is a sample page')).toBeVisible();
+});
 
+test(`user handle nested frames`, async ({ page }) => {
+    await page.goto('https://demoqa.com');
+    const home = new HomePage(page);
+    await home.goToMenu(mainMenu, 'Nested Frames');
 
+    const parentFrame = page.frameLocator('#frame1');
+    await expect(parentFrame.getByText('Parent frame')).toBeVisible();
 
+    const childFrame = parentFrame.frameLocator('iframe');
+    await expect(childFrame.getByText('Child Iframe')).toBeVisible();
+});
+
+test(`user handle modal dialogs`, async ({ page }) => {
+    await page.goto('https://demoqa.com');
+    const home = new HomePage(page);
+    await home.goToMenu(mainMenu, 'Modal Dialogs');
+
+    await page.locator('#showSmallModal').click();
+    await expect(page.locator('#example-modal-sizes-title-sm')).toHaveText('Small Modal');
+    await expect(page.locator('.modal-body')).toHaveText('This is a small modal. It has very less content');
+    await page.locator('#closeSmallModal').click();
+    await expect(page.locator('#example-modal-sizes-title-sm')).toBeHidden();
+    await page.locator('#showLargeModal').click();
+    await expect(page.locator('#example-modal-sizes-title-lg')).toHaveText('Large Modal');
+    await expect(page.locator('.modal-body')).toContainText('Lorem Ipsum is simply dummy text of the printing and typesetting industry.');
+    await page.locator('#closeLargeModal').click();
+    await expect(page.locator('#example-modal-sizes-title-lg')).toBeHidden();
 });
