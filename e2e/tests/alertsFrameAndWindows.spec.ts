@@ -84,6 +84,19 @@ test(`user handle alerts`, async ({ page }) => {
     await page.locator('#promtButton').click();
     await expect(page.locator('#promptResult')).toHaveText('You entered Pandu Wibisono');
     page.removeAllListeners('dialog');
+});
+
+test(`user handle frames`, async ({ page }) => {
+    await page.goto('https://demoqa.com');
+    const home = new HomePage(page);
+    await home.goToMenu(mainMenu, 'Frames');
+
+    const frame1 = page.frameLocator('iframe[width="500px"][height="350px"]');
+    await expect(frame1.getByText('This is a sample page')).toBeVisible();
+
+    const frame2 = page.frameLocator('iframe[width="100px"][height="100px"]');
+    await expect(frame2.getByText('This is a sample page')).toBeVisible();
+
 
 
 });
