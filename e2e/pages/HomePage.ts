@@ -9,7 +9,7 @@ export class HomePage {
         await el.scrollIntoViewIfNeeded();
         await el.click();
 
-        const accordion = this.page.locator('[class="accordion"]').getByText(subMenu)
+        const accordion = this.page.locator('[class="accordion"]').getByText(subMenu, { exact: true });
         await accordion.scrollIntoViewIfNeeded()
         await accordion.click()
 

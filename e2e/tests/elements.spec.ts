@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
+import path from 'path';
 
 const mainMenu = 'Elements';
 
@@ -101,4 +102,127 @@ test(`user doing CRUD web tables`, async ({ page }) => {
   await row.locator('span[title="Delete"]').click();
   await expect(page.locator('[role="rowgroup"]').filter({ hasText: 'Pandu' })).not.toBeVisible();
 
+});
+
+test('user click button actions', async ({ page }) => {
+  await page.goto('https://demoqa.com');
+  const home = new HomePage(page);
+  await home.goToMenu(mainMenu, 'Buttons');
+
+  await page.getByRole('button', { name: 'Double Click Me' }).dblclick();
+  await expect(page.locator('#doubleClickMessage')).toHaveText('You have done a double click')
+  await page.getByRole('button', { name: 'Right Click Me' }).click({ button: 'right' });
+  await expect(page.locator('#rightClickMessage')).toHaveText('You have done a right click')
+  await page.getByRole('button', { name: 'Click Me', exact: true }).click();
+  await expect(page.locator('#dynamicClickMessage')).toHaveText('You have done a dynamic click')
+});
+
+test('user click links', async ({ page }) => {
+  await page.goto('https://demoqa.com');
+  const home = new HomePage(page);
+  await home.goToMenu(mainMenu, 'Links');
+
+  await page.getByRole('link', { name: 'Created' }).click();
+  await expect(page.locator('#linkResponse')).toHaveText('Link has responded with staus 201 and status text Created');
+
+  await page.getByRole('link', { name: 'No Content' }).click();
+  await expect(page.locator('#linkResponse')).toHaveText('Link has responded with staus 204 and status text No Content');
+
+  await page.getByRole('link', { name: 'Moved' }).click();
+  await expect(page.locator('#linkResponse')).toHaveText('Link has responded with staus 301 and status text Moved Permanently');
+
+  await page.getByRole('link', { name: 'Bad Request' }).click();
+  await expect(page.locator('#linkResponse')).toHaveText('Link has responded with staus 400 and status text Bad Request');
+
+  await page.getByRole('link', { name: 'Unauthorized' }).click();
+  await expect(page.locator('#linkResponse')).toHaveText('Link has responded with staus 401 and status text Unauthorized');
+
+  await page.getByRole('link', { name: 'Forbidden' }).click();
+  await expect(page.locator('#linkResponse')).toHaveText('Link has responded with staus 403 and status text Forbidden');
+
+  await page.getByRole('link', { name: 'Not Found' }).click();
+  await expect(page.locator('#linkResponse')).toHaveText('Link has responded with staus 404 and status text Not Found');
+
+  const [newPage] = await Promise.all([
+    page.context().waitForEvent('page'),
+    page.getByRole('link', { name: 'Home', exact: true }).click()
+  ]);
+  await newPage.waitForLoadState();
+  await expect(newPage).toHaveURL('https://demoqa.com/');
+});
+
+test('user check broken links and images', async ({ page }) => {
+  await page.goto('https://demoqa.com');
+  const home = new HomePage(page);
+  await home.goToMenu(mainMenu, 'Broken Links - Images');
+
+  // valid image
+  const validImage = page.locator('img[src="/images/Toolsqa.jpg"]').nth(1);
+  await expect(validImage).toBeVisible();
+  const width = await validImage.evaluate(el => (el as HTMLImageElement).naturalWidth);
+  expect(width).toBeGreaterThan(0);
+
+
+  // broken image
+  const brokenImage = page.locator('img[src="/images/Toolsqa_1.jpg"]');
+  await expect(brokenImage).toBeVisible();
+  expect(width).toBe(347); // assuming the broken image has a width of 347 pixels
+
+  // valid link
+  await page.getByRole('link', { name: 'Click Here for Valid Link' }).click()
+  await expect(page).toHaveURL('https://demoqa.com/');
+  await page.goBack();
+
+  // broken link
+  await page.getByRole('link', { name: 'Click Here for Broken Link' }).click();
+  await expect(page).toHaveURL('http://the-internet.herokuapp.com/status_codes/500');
+});
+
+test('user upload and download file', async ({ page }) => {
+  await page.goto('https://demoqa.com');
+  const home = new HomePage(page);
+  await home.goToMenu(mainMenu, 'Upload and Download');
+
+  // download file
+  const downloadPromise = page.waitForEvent('download');
+  page.locator('[id="downloadButton"]').click()
+
+  const download = await downloadPromise;
+  const savePath = path.resolve(__dirname, '../../e2e/downloads', download.suggestedFilename());
+  await download.saveAs(savePath);
+
+  console.log("Saved at:", savePath);
+
+  const savedPath = savePath;
+  expect(savedPath).toContain('sampleFile.jpeg');
+
+  // delete file after download
+  const fs = require('fs');
+  fs.unlinkSync(savedPath);
+
+  // upload file
+  const filePath = require('path').join(__dirname, '../assets/ProfilPhoto.jpg');
+  await page.locator('input[type="file"]').setInputFiles(filePath);
+  await expect(page.locator('#uploadedFilePath')).toHaveText('C:\\fakepath\\ProfilPhoto.jpg');
+});
+
+test('user check dynamic properties', async ({ page }) => {
+  await page.goto('https://demoqa.com');
+  const home = new HomePage(page);
+  await home.goToMenu(mainMenu, 'Dynamic Properties');
+
+  // check enable button after 5 seconds, color change and visible button
+  const enableButton = page.locator('[id="enableAfter"]');
+  await expect(enableButton).toBeDisabled();
+  const colorChangeButton = page.locator('[id="colorChange"]');
+  const initialClass = await colorChangeButton.getAttribute('class');
+  const visibleButton = page.locator('[id="visibleAfter"]');
+  await expect(visibleButton).toBeHidden();
+
+  await page.waitForTimeout(6000);
+
+  await expect(enableButton).toBeEnabled();
+  const changedClass = await colorChangeButton.getAttribute('class');
+  expect(initialClass).not.toBe(changedClass);
+  await expect(visibleButton).toBeVisible();
 });
