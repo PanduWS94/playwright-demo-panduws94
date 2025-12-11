@@ -201,8 +201,7 @@ test('user upload and download file', async ({ page }) => {
   fs.unlinkSync(savedPath);
 
   // upload file
-  const filePath = require('path').join(__dirname, '../assets/ProfilPhoto.jpg');
-  await page.locator('input[type="file"]').setInputFiles(filePath);
+  await page.locator('input[type="file"]').setInputFiles('e2e/assets/ProfilPhoto.jpg');
   await expect(page.locator('#uploadedFilePath')).toHaveText('C:\\fakepath\\ProfilPhoto.jpg');
 });
 
