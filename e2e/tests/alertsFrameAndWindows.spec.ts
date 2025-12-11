@@ -120,6 +120,7 @@ test(`user handle modal dialogs`, async ({ page }) => {
     await expect(page.locator('.modal-body')).toHaveText('This is a small modal. It has very less content');
     await page.locator('#closeSmallModal').click();
     await expect(page.locator('#example-modal-sizes-title-sm')).toBeHidden();
+
     await page.locator('#showLargeModal').click();
     await expect(page.locator('#example-modal-sizes-title-lg')).toHaveText('Large Modal');
     await expect(page.locator('.modal-body')).toContainText('Lorem Ipsum is simply dummy text of the printing and typesetting industry.');
