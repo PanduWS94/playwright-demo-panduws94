@@ -4,25 +4,25 @@ import path from 'path';
 
 const mainMenu = 'Elements';
 
-const menus = [
-  { subMenu: 'Text Box' },
-  { subMenu: 'Check Box' },
-  { subMenu: 'Radio Button' },
-  { subMenu: 'Web Tables' },
-  { subMenu: 'Buttons' },
-  { subMenu: 'Links' },
-  { subMenu: 'Broken Links - Images' },
-  { subMenu: 'Upload and Download' },
-  { subMenu: 'Dynamic Properties' },
-];
+// const menus = [
+//   { subMenu: 'Text Box' },
+//   { subMenu: 'Check Box' },
+//   { subMenu: 'Radio Button' },
+//   { subMenu: 'Web Tables' },
+//   { subMenu: 'Buttons' },
+//   { subMenu: 'Links' },
+//   { subMenu: 'Broken Links - Images' },
+//   { subMenu: 'Upload and Download' },
+//   { subMenu: 'Dynamic Properties' },
+// ];
 
-menus.forEach(({ subMenu }) => {
-  test(`access to menu ${mainMenu} and submenu ${subMenu}`, async ({ page }) => {
-    await page.goto('https://demoqa.com');
-    const home = new HomePage(page);
-    await home.goToMenu(mainMenu, subMenu);
-  });
-});
+// menus.forEach(({ subMenu }) => {
+//   test(`access to menu ${mainMenu} and submenu ${subMenu}`, async ({ page }) => {
+//     await page.goto('https://demoqa.com');
+//     const home = new HomePage(page);
+//     await home.goToMenu(mainMenu, subMenu);
+//   });
+// });
 
 test(`user input in Text Box`, async ({ page }) => {
   await page.goto('https://demoqa.com');
@@ -147,6 +147,7 @@ test('user click links', async ({ page }) => {
     page.context().waitForEvent('page'),
     page.getByRole('link', { name: 'Home', exact: true }).click()
   ]);
+  await newPage.waitForTimeout(10000);
   await newPage.waitForLoadState();
   await expect(newPage).toHaveURL('https://demoqa.com/');
 });

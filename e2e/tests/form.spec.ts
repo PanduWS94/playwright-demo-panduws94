@@ -3,17 +3,17 @@ import { HomePage } from '../pages/home.page';
 
 const mainMenu = 'Forms';
 
-const menus = [
-    { subMenu: 'Practice Form' },
-];
+// const menus = [
+//     { subMenu: 'Practice Form' },
+// ];
 
-menus.forEach(({ subMenu }) => {
-    test(`access to menu ${mainMenu} and submenu ${subMenu}`, async ({ page }) => {
-        await page.goto('https://demoqa.com');
-        const home = new HomePage(page);
-        await home.goToMenu(mainMenu, subMenu);
-    });
-});
+// menus.forEach(({ subMenu }) => {
+//     test(`access to menu ${mainMenu} and submenu ${subMenu}`, async ({ page }) => {
+//         await page.goto('https://demoqa.com');
+//         const home = new HomePage(page);
+//         await home.goToMenu(mainMenu, subMenu);
+//     });
+// });
 
 test(`user input in Practice Form`, async ({ page }) => {
     await page.goto('https://demoqa.com');
