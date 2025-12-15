@@ -157,6 +157,7 @@ test('user handle droppable interaction', async ({ page }) => {
         await page.mouse.move(boxDropChild.x + boxDropChild.width / 2, boxDropChild.y + boxDropChild.height / 2);
         await page.mouse.up();
     }
+    await page.waitForTimeout(3000);
     await expect(dropBoxParent.locator('p').first()).toHaveText('Dropped!');
     await expect(dropBoxChild.locator('p').first()).toHaveText('Dropped!');
 
@@ -170,6 +171,7 @@ test('user handle droppable interaction', async ({ page }) => {
         await page.mouse.move(boxDropChild1.x + boxDropChild1.width / 2, boxDropChild1.y + boxDropChild1.height / 2);
         await page.mouse.up();
     }
+    await page.waitForTimeout(3000);
     await expect(dropBoxParent1.locator('p').first()).toHaveText('Outer droppable');
     await expect(dropBoxChild1.locator('p').first()).toHaveText('Dropped!');
 

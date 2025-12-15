@@ -122,20 +122,26 @@ test('user handle tool tips widget', async ({ page }) => {
 
     const button = page.locator('#toolTipButton');
     await button.hover();
-    await expect(page.locator('.tooltip-inner', { hasText: 'You hovered over the Button' })).toBeVisible({ timeout: 60000 });
+    await expect(page.locator('[role="tooltip"]', { hasText: 'You hovered over the Button' })).toBeVisible({ timeout: 60000 });
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(3000);
 
     const textField = page.locator('#toolTipTextField');
-    await textField.click();
     await textField.hover();
     await expect(page.locator('.tooltip-inner', { hasText: 'You hovered over the text field' })).toBeVisible({ timeout: 60000 });
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(3000);
 
     const contraryLink = page.locator('a[href="javascript:void(0)"]', { hasText: 'Contrary' });
     await contraryLink.hover();
     await expect(page.locator('.tooltip-inner', { hasText: 'You hovered over the Contrary' })).toBeVisible({ timeout: 60000 });
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(3000);
 
     const numberLink = page.locator('a[href="javascript:void(0)"]', { hasText: '1.10.32' });
     await numberLink.hover();
     await expect(page.locator('.tooltip-inner', { hasText: 'You hovered over the 1.10.32' })).toBeVisible({ timeout: 60000 });
+    await page.waitForTimeout(3000);
 });
 
 test('user handle menu widget', async ({ page }) => {
