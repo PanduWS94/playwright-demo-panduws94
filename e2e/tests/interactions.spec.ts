@@ -206,90 +206,90 @@ test('user handle draggable interaction', async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Dragabble');
 
-    // const dragBox = page.locator('#dragBox');
-    // const dropBox = page.getByRole('tabpanel', { name: 'Simple' });
-    // const boxBefore = await dropBox.boundingBox();
-    // if (boxBefore) {
-    //     await dragBox.hover();
-    //     await page.mouse.down();
-    //     await page.mouse.move(boxBefore.x + 100, boxBefore.y + 100);
-    //     await page.mouse.up();
-    // }
-    // const boxAfter = await dragBox.boundingBox();
-    // if (!boxAfter) throw new Error('boxAfter is null');
-    // if (!boxBefore) throw new Error('boxBefore is null');
-    // expect(boxAfter.x).toBeGreaterThan(boxBefore.x);
-    // expect(boxAfter.y).toBeGreaterThan(boxBefore.y);
+    const dragBox = page.locator('#dragBox');
+    const dropBox = page.getByRole('tabpanel', { name: 'Simple' });
+    const boxBefore = await dropBox.boundingBox();
+    if (boxBefore) {
+        await dragBox.hover();
+        await page.mouse.down();
+        await page.mouse.move(boxBefore.x + 100, boxBefore.y + 100);
+        await page.mouse.up();
+    }
+    const boxAfter = await dragBox.boundingBox();
+    if (!boxAfter) throw new Error('boxAfter is null');
+    if (!boxBefore) throw new Error('boxBefore is null');
+    expect(boxAfter.x).toBeGreaterThan(boxBefore.x);
+    expect(boxAfter.y).toBeGreaterThan(boxBefore.y);
 
 
-    // const tabAxisRestricted = page.locator('#draggableExample-tab-axisRestriction');
-    // await tabAxisRestricted.click();
+    const tabAxisRestricted = page.locator('#draggableExample-tab-axisRestriction');
+    await tabAxisRestricted.click();
 
-    // const dragBoxX = page.locator('#restrictedX');
-    // const boxXBefore = await dragBoxX.boundingBox();
-    // if (boxXBefore) {
-    //     await dragBoxX.hover();
-    //     await page.mouse.down();
-    //     await page.mouse.move(boxXBefore.x + 100, boxXBefore.y + 100);
-    //     await page.mouse.up();
-    // }
-    // const boxXAfter = await dragBoxX.boundingBox();
-    // if (!boxXAfter) throw new Error('boxXAfter is null');
-    // if (!boxXBefore) throw new Error('boxXBefore is null');
-    // expect(boxXAfter.x).toBeGreaterThan(boxXBefore.x);
-    // expect(boxXAfter.y).toBe(boxXBefore.y);
+    const dragBoxX = page.locator('#restrictedX');
+    const boxXBefore = await dragBoxX.boundingBox();
+    if (boxXBefore) {
+        await dragBoxX.hover();
+        await page.mouse.down();
+        await page.mouse.move(boxXBefore.x + 100, boxXBefore.y + 100);
+        await page.mouse.up();
+    }
+    const boxXAfter = await dragBoxX.boundingBox();
+    if (!boxXAfter) throw new Error('boxXAfter is null');
+    if (!boxXBefore) throw new Error('boxXBefore is null');
+    expect(boxXAfter.x).toBeGreaterThan(boxXBefore.x);
+    expect(boxXAfter.y).toBe(boxXBefore.y);
 
-    // const dragBoxY = page.locator('#restrictedY');
-    // const boxYBefore = await dragBoxY.boundingBox();
-    // if (boxYBefore) {
-    //     await dragBoxY.hover();
-    //     await page.mouse.down();
-    //     await page.mouse.move(boxYBefore.x + 100, boxYBefore.y + 100);
-    //     await page.mouse.up();
-    // }
-    // const boxYAfter = await dragBoxY.boundingBox();
-    // if (!boxYAfter) throw new Error('boxYAfter is null');
-    // if (!boxYBefore) throw new Error('boxYBefore is null');
-    // expect(boxYAfter.x).toBe(boxYBefore.x);
-    // expect(boxYAfter.y).toBeGreaterThan(boxYBefore.y);
+    const dragBoxY = page.locator('#restrictedY');
+    const boxYBefore = await dragBoxY.boundingBox();
+    if (boxYBefore) {
+        await dragBoxY.hover();
+        await page.mouse.down();
+        await page.mouse.move(boxYBefore.x + 100, boxYBefore.y + 100);
+        await page.mouse.up();
+    }
+    const boxYAfter = await dragBoxY.boundingBox();
+    if (!boxYAfter) throw new Error('boxYAfter is null');
+    if (!boxYBefore) throw new Error('boxYBefore is null');
+    expect(boxYAfter.x).toBe(boxYBefore.x);
+    expect(boxYAfter.y).toBeGreaterThan(boxYBefore.y);
 
 
-    // const tabContainerRestricted = page.locator('#draggableExample-tab-containerRestriction');
-    // await tabContainerRestricted.click();
+    const tabContainerRestricted = page.locator('#draggableExample-tab-containerRestriction');
+    await tabContainerRestricted.click();
 
-    // const dragBoxContainer = page.locator('#containmentWrapper').getByText(`I'm contained within the box`);
-    // const boxContainerBefore = await dragBoxContainer.boundingBox();
-    // const container = page.locator('#containmentWrapper');
-    // const containerBox = await container.boundingBox();
-    // if (boxContainerBefore && containerBox) {
-    //     await dragBoxContainer.hover();
-    //     await page.mouse.down();
-    //     await page.mouse.move(containerBox.x + containerBox.width + 50, containerBox.y + containerBox.height + 50);
-    //     await page.mouse.up();
-    // }
-    // const boxContainerAfter = await dragBoxContainer.boundingBox();
-    // if (!boxContainerAfter) throw new Error('boxContainerAfter is null');
-    // if (!boxContainerBefore) throw new Error('boxContainerBefore is null');
-    // if (!containerBox) throw new Error('containerBox is null');
-    // expect(boxContainerAfter.x + boxContainerAfter.width).toBeLessThan(containerBox.x + containerBox.width);
-    // expect(boxContainerAfter.y + boxContainerAfter.height).toBeLessThan(containerBox.y + containerBox.height);
+    const dragBoxContainer = page.locator('#containmentWrapper').getByText(`I'm contained within the box`);
+    const boxContainerBefore = await dragBoxContainer.boundingBox();
+    const container = page.locator('#containmentWrapper');
+    const containerBox = await container.boundingBox();
+    if (boxContainerBefore && containerBox) {
+        await dragBoxContainer.hover();
+        await page.mouse.down();
+        await page.mouse.move(containerBox.x + containerBox.width + 50, containerBox.y + containerBox.height + 50);
+        await page.mouse.up();
+    }
+    const boxContainerAfter = await dragBoxContainer.boundingBox();
+    if (!boxContainerAfter) throw new Error('boxContainerAfter is null');
+    if (!boxContainerBefore) throw new Error('boxContainerBefore is null');
+    if (!containerBox) throw new Error('containerBox is null');
+    expect(boxContainerAfter.x + boxContainerAfter.width).toBeLessThan(containerBox.x + containerBox.width);
+    expect(boxContainerAfter.y + boxContainerAfter.height).toBeLessThan(containerBox.y + containerBox.height);
 
-    // const dragBoxContainerParent = page.locator('[class="draggable ui-widget-content m-3"]').getByText(`I'm contained within my parent`)
-    // const boxContainerParentBefore = await dragBoxContainerParent.boundingBox();
-    // const containerParent = page.locator('[class="draggable ui-widget-content m-3"]');
-    // const containerParentBox = await containerParent.boundingBox();
-    // if (boxContainerParentBefore && containerParentBox) {
-    //     await dragBoxContainerParent.hover();
-    //     await page.mouse.down();
-    //     await page.mouse.move(containerParentBox.x + containerParentBox.width + 50, containerParentBox.y + containerParentBox.height + 50);
-    //     await page.mouse.up();
-    // }
-    // const boxContainerParentAfter = await dragBoxContainerParent.boundingBox();
-    // if (!boxContainerParentAfter) throw new Error('boxContainerParentAfter is null');
-    // if (!boxContainerParentBefore) throw new Error('boxContainerParentBefore is null');
-    // if (!containerParentBox) throw new Error('containerBox is null');
-    // expect(boxContainerParentAfter.x + boxContainerParentAfter.width).toBeLessThan(containerParentBox.x + containerParentBox.width);
-    // expect(boxContainerParentAfter.y + boxContainerParentAfter.height).toBeLessThan(containerParentBox.y + containerParentBox.height);
+    const dragBoxContainerParent = page.locator('[class="draggable ui-widget-content m-3"]').getByText(`I'm contained within my parent`)
+    const boxContainerParentBefore = await dragBoxContainerParent.boundingBox();
+    const containerParent = page.locator('[class="draggable ui-widget-content m-3"]');
+    const containerParentBox = await containerParent.boundingBox();
+    if (boxContainerParentBefore && containerParentBox) {
+        await dragBoxContainerParent.hover();
+        await page.mouse.down();
+        await page.mouse.move(containerParentBox.x + containerParentBox.width + 50, containerParentBox.y + containerParentBox.height + 50);
+        await page.mouse.up();
+    }
+    const boxContainerParentAfter = await dragBoxContainerParent.boundingBox();
+    if (!boxContainerParentAfter) throw new Error('boxContainerParentAfter is null');
+    if (!boxContainerParentBefore) throw new Error('boxContainerParentBefore is null');
+    if (!containerParentBox) throw new Error('containerBox is null');
+    expect(boxContainerParentAfter.x + boxContainerParentAfter.width).toBeLessThan(containerParentBox.x + containerParentBox.width);
+    expect(boxContainerParentAfter.y + boxContainerParentAfter.height).toBeLessThan(containerParentBox.y + containerParentBox.height);
 
 
     const tabCursorStyle = page.locator('#draggableExample-tab-cursorStyle');
@@ -321,21 +321,19 @@ test('user handle draggable interaction', async ({ page }) => {
     if (!boxCursorTopLeftAfter) throw new Error('boxCursorTopLeftAfter is null');
     if (!boxCursorTopLeftBefore) throw new Error('boxCursorTopLeftBefore is null');
     expect(boxCursorTopLeftAfter.x).toBeGreaterThan(boxCursorTopLeftBefore.x);
-    expect(boxCursorTopLeftAfter.y).toBeGreaterThan(boxCursorTopLeftBefore.y);
+    expect(boxCursorTopLeftAfter.y).toBeLessThan(boxCursorTopLeftBefore.y);
 
-    // const tabEvents = page.locator('#draggableExample-tab-events');
-    // await tabEvents.click();
-    // const dragBoxEvents = page.locator('#eventsBox');
-    // const boxEventsBefore = await dragBoxEvents.boundingBox();
-    // if (boxEventsBefore) {
-    //     await dragBoxEvents.hover();
-    //     await page.mouse.down();
-    //     await page.mouse.move(boxEventsBefore.x + 100, boxEventsBefore.y + 100);
-    //     await page.mouse.up();
-    // }
-    // const boxEventsAfter = await dragBoxEvents.boundingBox();
-    // if (!boxEventsAfter) throw new Error('boxEventsAfter is null');
-    // if (!boxEventsBefore) throw new Error('boxEventsBefore is null');
-    // expect(boxEventsAfter.x).toBeGreaterThan(boxEventsBefore.x);
-    // expect(boxEventsAfter.y).toBeGreaterThan(boxEventsBefore.y);
+    const dragBoxCursorBottom = page.locator('#cursorBottom');
+    const boxCursorBottomBefore = await dragBoxCursorBottom.boundingBox();
+    if (boxCursorBottomBefore) {
+        await dragBoxCursorBottom.hover();
+        await page.mouse.down();
+        await page.mouse.move(boxCursorBottomBefore.x + 100, boxCursorBottomBefore.y + 100);
+        await page.mouse.up();
+    }
+    const boxCursorBottomAfter = await dragBoxCursorBottom.boundingBox();
+    if (!boxCursorBottomAfter) throw new Error('boxCursorBottomAfter is null');
+    if (!boxCursorBottomBefore) throw new Error('boxCursorBottomBefore is null');
+    expect(boxCursorBottomAfter.x).toBeGreaterThan(boxCursorBottomBefore.x);
+    expect(boxCursorBottomAfter.y).toBe(boxCursorBottomBefore.y);
 });
