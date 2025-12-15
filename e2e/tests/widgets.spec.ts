@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
-import { time } from 'console';
+import { HomePage } from '../pages/home.page';
 
 const mainMenu = 'Widgets';
 

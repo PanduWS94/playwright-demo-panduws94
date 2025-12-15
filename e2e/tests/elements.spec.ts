@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
+import { HomePage } from '../pages/home.page';
 import path from 'path';
 
 const mainMenu = 'Elements';
