@@ -24,6 +24,7 @@ test(`user handle browser windows`, async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Browser Windows');
 
+    // new tab action
     const [newPage] = await Promise.all([
         page.waitForEvent('popup'),
         page.getByRole('button', { name: 'New Tab' }).click(),
@@ -31,6 +32,7 @@ test(`user handle browser windows`, async ({ page }) => {
     await expect(newPage).toHaveURL('https://demoqa.com/sample');
     await expect(newPage.locator('h1', { hasText: 'This is a sample page' })).toBeVisible();
 
+    // new window action
     const [newWindow] = await Promise.all([
         page.waitForEvent('popup'),
         page.getByRole('button', { name: 'New Window', exact: true }).click(),
@@ -38,6 +40,7 @@ test(`user handle browser windows`, async ({ page }) => {
     await expect(newWindow).toHaveURL('https://demoqa.com/sample');
     await expect(newWindow.locator('h1', { hasText: 'This is a sample page' })).toBeVisible();
 
+    // new window message action
     const [newWindowMessage] = await Promise.all([
         page.waitForEvent('popup'),
         page.getByRole('button', { name: 'New Window Message' }).click(),
@@ -51,6 +54,7 @@ test(`user handle alerts`, async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Alerts');
 
+    // simple alert
     page.on('dialog', async (dialog) => {
         expect(dialog.message()).toBe('You clicked a button');
         await dialog.accept();
@@ -58,7 +62,7 @@ test(`user handle alerts`, async ({ page }) => {
     await page.locator('#alertButton').click();
     page.removeAllListeners('dialog');
 
-
+    // alert with timer
     page.on('dialog', async (dialog) => {
         expect(dialog.message()).toBe('This alert appeared after 5 seconds');
         await dialog.accept();
@@ -67,7 +71,7 @@ test(`user handle alerts`, async ({ page }) => {
     await page.waitForTimeout(6000);
     page.removeAllListeners('dialog');
 
-
+    // confirm alert
     page.on('dialog', async (dialog) => {
         expect(dialog.message()).toBe('Do you confirm action?');
         await dialog.accept();
@@ -76,7 +80,7 @@ test(`user handle alerts`, async ({ page }) => {
     await expect(page.locator('#confirmResult')).toHaveText('You selected Ok');
     page.removeAllListeners('dialog');
 
-
+    // prompt alert
     page.on('dialog', async (dialog) => {
         expect(dialog.message()).toBe('Please enter your name');
         await dialog.accept('Pandu Wibisono');
@@ -91,9 +95,11 @@ test(`user handle frames`, async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Frames');
 
+    // large frame
     const frame1 = page.frameLocator('iframe[width="500px"][height="350px"]');
     await expect(frame1.getByText('This is a sample page')).toBeVisible();
 
+    // small frame
     const frame2 = page.frameLocator('iframe[width="100px"][height="100px"]');
     await expect(frame2.getByText('This is a sample page')).toBeVisible();
 });
@@ -103,9 +109,11 @@ test(`user handle nested frames`, async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Nested Frames');
 
+    // parent frame
     const parentFrame = page.frameLocator('#frame1');
     await expect(parentFrame.getByText('Parent frame')).toBeVisible();
 
+    // child frame
     const childFrame = parentFrame.frameLocator('iframe');
     await expect(childFrame.getByText('Child Iframe')).toBeVisible();
 });
@@ -115,12 +123,14 @@ test(`user handle modal dialogs`, async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Modal Dialogs');
 
+    // small modal dialog
     await page.locator('#showSmallModal').click();
     await expect(page.locator('#example-modal-sizes-title-sm')).toHaveText('Small Modal');
     await expect(page.locator('.modal-body')).toHaveText('This is a small modal. It has very less content');
     await page.locator('#closeSmallModal').click();
     await expect(page.locator('#example-modal-sizes-title-sm')).toBeHidden();
 
+    // large modal dialog
     await page.locator('#showLargeModal').click();
     await expect(page.locator('#example-modal-sizes-title-lg')).toHaveText('Large Modal');
     await expect(page.locator('.modal-body')).toContainText('Lorem Ipsum is simply dummy text of the printing and typesetting industry.');

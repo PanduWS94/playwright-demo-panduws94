@@ -24,6 +24,7 @@ test('user handle sortable interaction', async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Sortable');
 
+    // list tab
     const itemOne = page.locator('#demo-tabpane-list > div > div:nth-child(1)');
     const itemFive = page.locator('#demo-tabpane-list > div > div:nth-child(5)');
     const boxOne = await itemOne.boundingBox();
@@ -36,6 +37,7 @@ test('user handle sortable interaction', async ({ page }) => {
     }
     await expect(page.locator('#demo-tabpane-list > div > div:nth-child(4)')).toHaveText('Five');
 
+    // grid tab
     const gridTab = page.locator('#demo-tab-grid');
     await gridTab.click();
 
@@ -57,9 +59,18 @@ test('user handle selectable interaction', async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Selectable');
 
+    // list tab
     const itemThree = page.locator('#verticalListContainer > li:nth-child(3)');
     await itemThree.click();
     await expect(itemThree).toHaveClass(/active/);
+
+    const gridTab = page.locator('#demo-tab-grid');
+    await gridTab.click();
+
+    // grid tab
+    const itemGrid = page.locator('#row2 > li:nth-child(2)');
+    await itemGrid.click();
+    await expect(itemGrid).toHaveClass(/active/);
 });
 
 test('user handle resizable interaction', async ({ page }) => {
@@ -67,6 +78,7 @@ test('user handle resizable interaction', async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Resizable');
 
+    // resizable box
     const resizableBox = page.locator('#resizableBoxWithRestriction');
     const handle = resizableBox.locator('.react-resizable-handle');
     const boxBefore = await resizableBox.boundingBox();
@@ -79,10 +91,10 @@ test('user handle resizable interaction', async ({ page }) => {
     const boxAfter = await resizableBox.boundingBox();
     if (!boxAfter) throw new Error('boxAfter is null');
     if (!boxBefore) throw new Error('boxBefore is null');
-
     expect(boxAfter.width).toBeGreaterThan(boxBefore.width);
     expect(boxAfter.height).toBeGreaterThan(boxBefore.height);
 
+    // resizable
     const resizable = page.locator('#resizable');
     const handle2 = resizable.locator('.react-resizable-handle');
     const box2Before = await resizable.boundingBox();
@@ -95,7 +107,6 @@ test('user handle resizable interaction', async ({ page }) => {
     const box2After = await resizable.boundingBox();
     if (!box2After) throw new Error('boxAfter is null');
     if (!box2Before) throw new Error('boxBefore is null');
-
     expect(box2After.width).toBeGreaterThan(box2Before.width);
     expect(box2After.height).toBeGreaterThan(box2Before.height);
 });
@@ -105,6 +116,7 @@ test('user handle droppable interaction', async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Droppable');
 
+    // simple tab
     const dragBox = page.locator('#draggable');
     const dropBox = page.getByRole('tabpanel', { name: 'Simple' }).locator('#droppable');
     const boxDrop = await dropBox.boundingBox();
@@ -116,7 +128,7 @@ test('user handle droppable interaction', async ({ page }) => {
     }
     await expect(dropBox.locator('p')).toHaveText('Dropped!');
 
-
+    // accept tab
     const tabAccept = page.locator('#droppableExample-tab-accept');
     await tabAccept.click();
 
@@ -141,7 +153,7 @@ test('user handle droppable interaction', async ({ page }) => {
     }
     await expect(dropBox2.locator('p')).toHaveText('Dropped!');
 
-
+    // prevent propagation tab
     const tabPreventPropagation = page.locator('#droppableExample-tab-preventPropogation');
     await tabPreventPropagation.click();
 
@@ -175,7 +187,7 @@ test('user handle droppable interaction', async ({ page }) => {
     await expect(dropBoxParent1.locator('p').first()).toHaveText('Outer droppable');
     await expect(dropBoxChild1.locator('p').first()).toHaveText('Dropped!');
 
-
+    // revert draggable tab
     const tabRevertDraggable = page.locator('#droppableExample-tab-revertable');
     await tabRevertDraggable.click();
 
@@ -208,6 +220,7 @@ test('user handle draggable interaction', async ({ page }) => {
     const home = new HomePage(page);
     await home.goToMenu(mainMenu, 'Dragabble');
 
+    // simple tab
     const dragBox = page.locator('#dragBox');
     const dropBox = page.getByRole('tabpanel', { name: 'Simple' });
     const boxBefore = await dropBox.boundingBox();
@@ -223,7 +236,7 @@ test('user handle draggable interaction', async ({ page }) => {
     expect(boxAfter.x).toBeGreaterThan(boxBefore.x);
     expect(boxAfter.y).toBeGreaterThan(boxBefore.y);
 
-
+    // axis restricted tab
     const tabAxisRestricted = page.locator('#draggableExample-tab-axisRestriction');
     await tabAxisRestricted.click();
 
@@ -255,7 +268,7 @@ test('user handle draggable interaction', async ({ page }) => {
     expect(boxYAfter.x).toBe(boxYBefore.x);
     expect(boxYAfter.y).toBeGreaterThan(boxYBefore.y);
 
-
+    // container restricted tab
     const tabContainerRestricted = page.locator('#draggableExample-tab-containerRestriction');
     await tabContainerRestricted.click();
 
@@ -293,7 +306,7 @@ test('user handle draggable interaction', async ({ page }) => {
     expect(boxContainerParentAfter.x + boxContainerParentAfter.width).toBeLessThan(containerParentBox.x + containerParentBox.width);
     expect(boxContainerParentAfter.y + boxContainerParentAfter.height).toBeLessThan(containerParentBox.y + containerParentBox.height);
 
-
+    // cursor style tab
     const tabCursorStyle = page.locator('#draggableExample-tab-cursorStyle');
     await tabCursorStyle.click();
 

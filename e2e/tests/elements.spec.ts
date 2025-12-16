@@ -80,6 +80,7 @@ test(`user doing CRUD web tables`, async ({ page }) => {
   const home = new HomePage(page);
   await home.goToMenu(mainMenu, 'Web Tables');
 
+  // add record
   await page.locator('[id="addNewRecordButton"]').click({ force: true });
   await page.locator('[id="firstName"]').fill('Pandu');
   await page.locator('[id="lastName"]').fill('Wibisono');
@@ -94,11 +95,14 @@ test(`user doing CRUD web tables`, async ({ page }) => {
   const row = page.locator('[role="rowgroup"]', {
     hasText: 'Pandu'
   });
+
+  // edit record
   await row.locator('span[title="Edit"]').click();
   await page.locator('[id="salary"]').fill('1000000');
   await page.getByRole('button', { name: 'Submit' }).click();
   await expect(page.locator('[role="rowgroup"]').filter({ hasText: '1000000' })).toBeVisible();
 
+  // delete record
   await row.locator('span[title="Delete"]').click();
   await expect(page.locator('[role="rowgroup"]').filter({ hasText: 'Pandu' })).not.toBeVisible();
 
@@ -109,10 +113,15 @@ test('user click button actions', async ({ page }) => {
   const home = new HomePage(page);
   await home.goToMenu(mainMenu, 'Buttons');
 
+  // double click action
   await page.getByRole('button', { name: 'Double Click Me' }).dblclick();
   await expect(page.locator('#doubleClickMessage')).toHaveText('You have done a double click')
+
+  // right click action
   await page.getByRole('button', { name: 'Right Click Me' }).click({ button: 'right' });
   await expect(page.locator('#rightClickMessage')).toHaveText('You have done a right click')
+
+  // dynamic click action
   await page.getByRole('button', { name: 'Click Me', exact: true }).click();
   await expect(page.locator('#dynamicClickMessage')).toHaveText('You have done a dynamic click')
 });
@@ -143,6 +152,7 @@ test('user click links', async ({ page }) => {
   await page.getByRole('link', { name: 'Not Found' }).click();
   await expect(page.locator('#linkResponse')).toHaveText('Link has responded with staus 404 and status text Not Found');
 
+  // home link that opens in new tab
   const [newPage] = await Promise.all([
     page.context().waitForEvent('page'),
     page.getByRole('link', { name: 'Home', exact: true }).click()
@@ -162,7 +172,6 @@ test('user check broken links and images', async ({ page }) => {
   await expect(validImage).toBeVisible();
   const width = await validImage.evaluate(el => (el as HTMLImageElement).naturalWidth);
   expect(width).toBeGreaterThan(0);
-
 
   // broken image
   const brokenImage = page.locator('img[src="/images/Toolsqa_1.jpg"]');
@@ -187,7 +196,6 @@ test('user upload and download file', async ({ page }) => {
   // download file
   const downloadPromise = page.waitForEvent('download');
   page.locator('[id="downloadButton"]').click()
-
   const download = await downloadPromise;
   const savePath = path.resolve(__dirname, '../../e2e/downloads', download.suggestedFilename());
   await download.saveAs(savePath);
@@ -211,9 +219,11 @@ test('user check dynamic properties', async ({ page }) => {
   const home = new HomePage(page);
   await home.goToMenu(mainMenu, 'Dynamic Properties');
 
-  // check enable button after 5 seconds, color change and visible button
+  // check enable button after 5 seconds
   const enableButton = page.locator('[id="enableAfter"]');
   await expect(enableButton).toBeDisabled();
+
+  // check color change
   const colorChangeButton = page.locator('[id="colorChange"]');
   const initialClass = await colorChangeButton.getAttribute('class');
   const visibleButton = page.locator('[id="visibleAfter"]');
@@ -221,6 +231,7 @@ test('user check dynamic properties', async ({ page }) => {
 
   await page.waitForTimeout(6000);
 
+  // verify enable button after 5 seconds
   await expect(enableButton).toBeEnabled();
   const changedClass = await colorChangeButton.getAttribute('class');
   expect(initialClass).not.toBe(changedClass);
