@@ -23,10 +23,8 @@ test(`user input in Practice Form`, async ({ page }) => {
     await page.locator('[id="firstName"]').fill('Pandu');
     await page.locator('[id="lastName"]').fill('Wibisono');
     await page.locator('[id="userEmail"]').fill('testing@gmail.com');
-
     await page.getByText('Male', { exact: true }).click();
     await page.locator('[id="userNumber"]').fill('087823423423');
-
     await page.locator('[id="dateOfBirthInput"]').click();
     await page.locator('.react-datepicker__month-select').selectOption('5');
     await page.locator('.react-datepicker__year-select').selectOption('1990');
